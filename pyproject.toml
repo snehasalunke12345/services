@@ -1,0 +1,74 @@
+# ==============================================================================
+# Root pyproject.toml for the Telecom CCAI Monorepo (using uv)
+#
+# This file defines the project using the standard PEP 621 `[project]` table.
+# It specifies shared development dependencies in `[project.optional-dependencies]`.
+# ==============================================================================
+
+[project]
+name = "telecom-ccai-monorepo"
+version = "0.1.0"
+description = "A monorepo for the Telecom CCAI POC, containing Dialogflow CX agent definitions and fulfillment services."
+authors = [
+    { name = "Rakesh Singh", email = "rakesh.o.singh@capgemini.com" },
+]
+readme = "README.md"
+# We require a modern Python version.
+requires-python = ">=3.11"
+
+# NOTE: The main `dependencies` array should is empty or will contain only
+# packages that are truly common to EVERY single service.
+# Hence, it's empty and dependencies will be defined in each service's own pyproject.toml file.
+dependencies = []
+
+
+# ==============================================================================
+# SHARED DEVELOPMENT DEPENDENCIES
+#
+# These are defined as an "optional dependency" group called 'dev'.
+# Install with: `uv pip install -e .[dev]`
+# ==============================================================================
+[project.optional-dependencies]
+dev = [
+    # --- Core Tooling ---
+    "pytest>=7.4.0",
+    "pytest-cov>=4.1.0",
+    "ruff>=0.1.8",
+    "black>=23.11.0",
+    "mypy>=1.7.0",
+
+    # --- Google Cloud & Dialogflow Specific Tooling ---
+    "google-cloud-dialogflow-cx>=1.22.0",
+    "google-adk>=1.3.0",
+    "google-cloud-storage>=2.14.0",
+    "google-api-python-client>=2.110.0",
+]
+
+
+# ==============================================================================
+# TOOL CONFIGURATION
+#
+# Centralized CONFIGURATION for our development tools to ensure consistency
+# ==============================================================================
+
+[tool.ruff]
+line-length = 88
+select = ["E", "F", "W", "I", "UP"]
+
+[tool.black]
+line-length = 88
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+testpaths = [
+    "services",
+    "packages",
+    "agents"
+]
+addopts = "-ra --cov=services --cov=packages --cov-report=term-missing"
+
+[tool.mypy]
+python_version = "3.11.9"
+warn_return_any = true
+warn_unused_configs = true
+ignore_missing_imports = true
