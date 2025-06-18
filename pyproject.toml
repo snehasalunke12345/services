@@ -5,6 +5,12 @@
 # It specifies shared development dependencies in `[project.optional-dependencies]`.
 # ==============================================================================
 
+# Build System Definitions (This tells how to build this project.)
+[build-system]
+requires = ["steuptools>=64.0.0"]
+build-backend = "setuptools.build_meta"
+
+# Project Definition
 [project]
 name = "telecom-ccai-monorepo"
 version = "0.1.0"
@@ -51,8 +57,17 @@ dev = [
 # Centralized CONFIGURATION for our development tools to ensure consistency
 # ==============================================================================
 
+# Setuptools CONFIGURATIONS
+[tool.setuptools.packages.find]
+# Look for packages inside the 'packages' directory.
+where = ["packages"]
+
+# General setting that apply to both the linter & formatter.
 [tool.ruff]
 line-length = 88
+
+# Linter-specific settings.
+[tool.ruff.lint]
 select = ["E", "F", "W", "I", "UP"]
 
 [tool.black]
